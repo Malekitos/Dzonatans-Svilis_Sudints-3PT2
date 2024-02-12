@@ -2,7 +2,7 @@
     
     
 
-       <div className="container">
+       <div class="container mx-auto">
         <input type="text" v-model="userName" placeholder="Nickname">
         <input type="password" v-model="userPass" placeholder="Password">
         <input type="email" v-model="userEmail" placeholder="Email">

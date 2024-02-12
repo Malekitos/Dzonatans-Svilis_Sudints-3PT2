@@ -20,7 +20,7 @@
     <div id="app"> 
 
     <example />
-    <user />
+  
 
     </div>
    
