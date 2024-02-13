@@ -104,14 +104,20 @@
     checkFields(){
         if(this.taskData.title == ''){
             this.error = 'Title required!'
+            this.dateEntered = false
+            this.message = ''
             return
         }else{
             if(this.taskData.date == ''){
             this.error = 'Date required!'
+            this.dateEntered = false
+            this.message = ''
             return
         }else{
             if(this.taskData.time == ''){
             this.error = 'Time required!'
+            this.dateEntered = false
+            this.message = ''
             return
         }else{
             this.error = ''
