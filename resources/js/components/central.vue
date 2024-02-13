@@ -4,97 +4,86 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="text-white dark:bg-gray-800 rounded-md text-3xl p-5 flex ">
                 <div class="flex-auto font-bold ">Tasks</div>
-                <div class=" bg-indigo-700 p-2 rounded-md px-4 py-2 hover:bg-indigo-800"><button @click="openModal">New Task</button></div>
+                <div class=" bg-indigo-700 rounded-md p-2 px-4 py-2 hover:bg-indigo-800"><button v-on:click="toggleModal()">New Task</button></div>
             </div>
         </div>
     </div>
 
 
 
-    <div class="flex items-center justify-center">
-  </div>
-  <TransitionRoot appear :show="isOpen" as="template">
-    <Dialog as="div" @close="closeModal" class="relative z-10">
-      <TransitionChild
-        as="template"
-        enter="duration-300 ease-out"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="duration-200 ease-in"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div class="fixed inset-0 bg-black/25" />
-      </TransitionChild>
+  <div>
 
-      <div class="fixed inset-0 overflow-y-auto">
-        <div
-          class="flex min-h-full items-center justify-center p-4 text-center"
-        >
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
-          >
-            <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-gray-800 p-6 text-left align-middle shadow-xl transition-all"
-            >
-              <DialogTitle
-                as="h3"
-                class="text-lg font-medium leading-6 text-white"
-              >
-                Adding a new task
-              </DialogTitle>
-              <div class="mt-2">
-                <p class="text-sm text-gray-500">
-                    ...
+    <div v-if="showModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative w-auto my-6 mx-auto max-w-6xl">
+        <!--content-->
+        <div class="border-0 rounded-md shadow-lg relative flex flex-col w-full bg-gray-800 outline-none focus:outline-none">
+          <!--header-->
+          <div class="flex items-start justify-between p-5 border-b border-solid border-gray-600">
+            <h3 class="text-4xl font-medium leading-6 text-gray-200">
+              Add new Task
+            </h3>
+            <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" v-on:click="toggleModal()">
+              <span class="bg-transparent text-black opacity-5 h-5 w-6 text-2xl block outline-none focus:outline-none">
+              </span>
+            </button>
+          </div>
+          <!--body-->
+          <div class="relative p-6 flex-auto">
+            <div class="mt-2">
+                <p class="text-xl text-white">
+
+                    <div class=" border-indigo-700 text-2xl text-gray-200">
+
+                        <input type="text" placeholder="Title" class="bg-gray-800 text-2xl m-4 ml-0">
+                        <input type="date" class="bg-gray-800 text-2xl m-4" >
+                        <input type="time" class="bg-gray-800 text-2xl m-4 mr-0">
+
+                        <div class="">
+                            <input type="text" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16">
+                        </div>
+
+                    </div>
+
                 </p>
               </div>
-
-              <div class="mt-4">
-                <button
-                  type="button"
-                  class="inline-flex justify-center rounded-md border border-transparent bg-indigo-700 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                  @click="closeModal"
-                >
-                  Add
-                </button>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
+          </div>
+          <!--footer-->
+          <div class="p-6 border-t border-solid border-gray-600">
+            <button class="float-start border-2 rounded-md border-green-600 text-green-600 background-transparent font-bold uppercase  p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-600 hover:text-white " type="button" v-on:click="toggleModal()">
+              Save Changes
+            </button>
+            <button class="float-end text-red-500 bg-transparent border-2 border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase p-2 px-4 py-2 rounded-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleModal()">
+              Close
+            </button>
+          </div>
         </div>
       </div>
-    </Dialog>
-  </TransitionRoot>
+    </div>
+    <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
+  </div>
 
 
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import {
-  TransitionRoot,
-  TransitionChild,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from '@headlessui/vue'
 
-const isOpen = ref(false)
-
-function closeModal() {
-  isOpen.value = false
-}
-function openModal() {
-  isOpen.value = true
+<script>
+    export default {
+  name: "large-modal",
+  data() {
+    return {
+      showModal: false
+    }
+  },
+  methods: {
+    toggleModal: function(){
+      this.showModal = !this.showModal;
+    }
+  }
 }
 </script>
 
 
-<style lang="">
+<style>
+
 
 </style>
