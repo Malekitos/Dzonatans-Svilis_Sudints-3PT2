@@ -3,7 +3,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="text-white dark:bg-gray-800 rounded-md text-3xl p-5 flex ">
-                <div class="flex-auto font-bold ">Tasks</div>
+                <div class="flex-auto font-bold ">Title</div>
                 <div class=" bg-indigo-700 rounded-md p-2 px-4 py-2 hover:bg-indigo-800"><button v-on:click="toggleModal()">New Task</button></div>
             </div>
         </div>
@@ -34,14 +34,16 @@
 
                     <div class=" border-indigo-700 text-2xl text-gray-200">
 
-                        <input type="text" placeholder="Title" class="bg-gray-800 text-2xl m-4 ml-0">
-                        <input type="date" class="bg-gray-800 text-2xl m-4" >
-                        <input type="time" class="bg-gray-800 text-2xl m-4 mr-0">
+                        <input type="text" v-model="taskData.title" placeholder="Title" class="bg-gray-800 text-2xl m-4 ml-0">
+                        <input type="date" v-model="taskData.date" class="bg-gray-800 text-2xl m-4" >
+                        <input type="time" v-model="taskData.time" class="bg-gray-800 text-2xl m-4 mr-0">
 
                         <div class="">
-                            <input type="text" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16">
+                            <input type="text" v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16">
                         </div>
 
+                        <span class="text-red-500 underline">{{error}}</span>
+                        <span class="text-green-500 underline">{{message}}</span>
                     </div>
 
                 </p>
@@ -49,9 +51,18 @@
           </div>
           <!--footer-->
           <div class="p-6 border-t border-solid border-gray-600">
-            <button class="float-start border-2 rounded-md border-green-600 text-green-600 background-transparent font-bold uppercase  p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-600 hover:text-white " type="button" v-on:click="toggleModal()">
-              Save Changes
+            <button @click="checkFields()"class="mr-5 float-start border-2 rounded-md border-green-600 text-green-600 background-transparent font-bold uppercase  p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-600 hover:text-white " type="button">
+              Check
             </button>
+            <!-- Кнопка если все правильно -->
+            <button @click="storeTask()" v-if="dateEntered" class="float-start border-2 rounded-md border-green-600 text-green-600 background-transparent font-bold uppercase  p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-600 hover:text-white " type="button"  v-on:click="toggleModal()">
+              Create Task
+            </button>
+            <!-- кнопка если не все данные введены -->
+            <button v-else="dateEntered" @click="checkFields()" class="float-start border-2 rounded-md border-gray-600 text-gray-600 background-transparent font-bold uppercase  p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150" type="button">
+              Create Task
+            </button>
+
             <button class="float-end text-red-500 bg-transparent border-2 border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase p-2 px-4 py-2 rounded-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleModal()">
               Close
             </button>
@@ -63,6 +74,8 @@
   </div>
 
 
+
+
 </template>
 
 
@@ -71,12 +84,45 @@
   name: "large-modal",
   data() {
     return {
-      showModal: false
+      dateEntered: false,
+      showModal: false,
+      error: '',
+      message: '',
+      taskData: {
+        title: '',
+        date: '',
+        time: '',
+        detail: '',
+      },
     }
   },
   methods: {
     toggleModal: function(){
       this.showModal = !this.showModal;
+    },
+
+    checkFields(){
+        if(this.taskData.title == ''){
+            this.error = 'Title required!'
+            return
+        }else{
+            if(this.taskData.date == ''){
+            this.error = 'Date required!'
+            return
+        }else{
+            if(this.taskData.time == ''){
+            this.error = 'Time required!'
+            return
+        }else{
+            this.error = ''
+            this.dateEntered = true
+            this.message = 'Ok!'
+        }
+        }
+        }
+    },
+    storeTask(){
+
     }
   }
 }
