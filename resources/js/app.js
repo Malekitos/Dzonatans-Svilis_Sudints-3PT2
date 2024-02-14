@@ -10,6 +10,8 @@ const app = createApp({
     },
 });
 
+ window.apiUrl = window.location.origin + '/api/storeTask';
+
 app.mount("#app");
 
 window.Alpine = Alpine;

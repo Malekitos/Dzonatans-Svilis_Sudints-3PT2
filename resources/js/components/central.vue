@@ -3,13 +3,16 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="text-white dark:bg-gray-800 rounded-md text-3xl p-5 flex ">
-                <div class="flex-auto font-bold ">Title</div>
+                <div class="flex-auto font-bold ">Tasks</div>
                 <div class=" bg-indigo-700 rounded-md p-2 px-4 py-2 hover:bg-indigo-800"><button v-on:click="toggleModal()">New Task</button></div>
             </div>
         </div>
     </div>
 
 
+        <div v-for="(element, index) in tasks":key="index" class="">
+                    <p>{{element.title}}</p>
+            </div>
 
   <div>
 
@@ -42,8 +45,7 @@
                             <input type="text" v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16">
                         </div>
 
-                        <span class="text-red-500 underline">{{error}}</span>
-                        <span class="text-green-500 underline">{{message}}</span>
+                        <span  class="text-red-500 underline">{{error}}</span>
                     </div>
 
                 </p>
@@ -51,17 +53,28 @@
           </div>
           <!--footer-->
           <div class="p-6 border-t border-solid border-gray-600">
-            <button @click="checkFields()"class="mr-5 float-start border-2 rounded-md border-green-600 text-green-600 background-transparent font-bold uppercase  p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-600 hover:text-white " type="button">
-              Check
-            </button>
-            <!-- Кнопка если все правильно -->
-            <button @click="storeTask()" v-if="dateEntered" class="float-start border-2 rounded-md border-green-600 text-green-600 background-transparent font-bold uppercase  p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-600 hover:text-white " type="button"  v-on:click="toggleModal()">
-              Create Task
-            </button>
-            <!-- кнопка если не все данные введены -->
-            <button v-else="dateEntered" @click="checkFields()" class="float-start border-2 rounded-md border-gray-600 text-gray-600 background-transparent font-bold uppercase  p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150" type="button">
-              Create Task
-            </button>
+
+
+        <button
+                    @click="storeTask()"
+                    v-if="isFormValid"
+                    class="float-start border-2 rounded-md border-green-600 text-green-600 background-transparent font-bold uppercase p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-600 hover:text-white"
+                    type="button"
+                    v-on:click="toggleModal()"
+                    >
+                    Create Task
+                    </button>
+                    <button
+                    v-else
+                    @click="checkFields()"
+                    class="float-start border-2 rounded-md border-gray-600 text-gray-600 background-transparent font-bold uppercase p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150"
+                    type="button"
+                    >
+                    Create Task
+        </button>
+
+
+
 
             <button class="float-end text-red-500 bg-transparent border-2 border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase p-2 px-4 py-2 rounded-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleModal()">
               Close
@@ -80,6 +93,8 @@
 
 
 <script>
+import axios from 'axios';
+
     export default {
   name: "large-modal",
   data() {
@@ -88,50 +103,66 @@
       showModal: false,
       error: '',
       message: '',
+
       taskData: {
         title: '',
         date: '',
         time: '',
         detail: '',
       },
+      tasks: [],
     }
   },
-  methods: {
-    toggleModal: function(){
-      this.showModal = !this.showModal;
-    },
-
-    checkFields(){
+  computed: {
+  isFormValid() {
+    return (
+      !this.isEmpty(this.taskData.title) &&
+      !this.isEmpty(this.taskData.date) &&
+      !this.isEmpty(this.taskData.time)
+      // Add more conditions for other fields if needed
+    );
+  },
+  checkFields(){
         if(this.taskData.title == ''){
             this.error = 'Title required!'
             this.dateEntered = false
-            this.message = ''
             return
         }else{
             if(this.taskData.date == ''){
             this.error = 'Date required!'
             this.dateEntered = false
-            this.message = ''
             return
         }else{
             if(this.taskData.time == ''){
             this.error = 'Time required!'
             this.dateEntered = false
-            this.message = ''
             return
         }else{
             this.error = ''
             this.dateEntered = true
-            this.message = 'Ok!'
         }
         }
         }
     },
-    storeTask(){
+},
+  methods: {
+    toggleModal: function(){
+      this.showModal = !this.showModal;
+    },
+    isEmpty(value) {
+    return value.trim() === '';
+  },
+  storeTask(){
 
+          axios.post(window.apiUrl, this.taskData).then(response => {
+             console.log(response.data);
+             }).catch(errors => {
+            console.log(errors);
+         });
+        }
+      }
     }
-  }
-}
+
 </script>
 
 
