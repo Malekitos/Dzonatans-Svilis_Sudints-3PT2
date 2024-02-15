@@ -19,7 +19,7 @@ class TaskController extends Controller
 
         return response()->json('Task stored successfully!');
     }
-    public function getTasks(Request $request)
+    public function getTasks()
     {
         return response()->json(Task::latest()->get());
     }

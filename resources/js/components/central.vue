@@ -12,6 +12,7 @@
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="text-white dark:bg-gray-800 rounded-md text-3xl p-5 ">
+
                 <table class="table-auto">
                     <thead>
                        <tr>
@@ -23,11 +24,11 @@
                        </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(task,index) in taks":key="index">
+                        <tr v-for="(task,index) in tasks":key="index">
                             <td>{{index + 1}}</td>
                             <td>{{task.title}}</td>
                             <td>{{task.date}} | {{task.time}}</td>
-                            <td>{{task.detail.length <= 10 ? task.detail : task.detail.substr(0,10)+'...'}}</td>
+                            <td>{{task.detail.length < 10 ? task.detail : task.detail.substr(0,10)+'...'}}</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -128,9 +129,7 @@ import axios from 'axios';
         time: '',
         detail: '',
       },
-      tasks: [
-
-      ],
+      tasks: [],
     }
   },
   computed: {
@@ -138,7 +137,8 @@ import axios from 'axios';
     return (
       !this.isEmpty(this.taskData.title) &&
       !this.isEmpty(this.taskData.date) &&
-      !this.isEmpty(this.taskData.time)
+      !this.isEmpty(this.taskData.time)&&
+      !this.isEmpty(this.taskData.detail)
       // Add more conditions for other fields if needed
     );
   },
@@ -158,9 +158,15 @@ import axios from 'axios';
             this.dateEntered = false
             return
         }else{
+            if(this.taskData.detail == ''){
+            this.error = 'Detail required!'
+            this.dateEntered = false
+            return
+        }else{
                 this.error = ''
-                 this.dateEntered = true
-                    }
+                this.dateEntered = true
+            }
+        }
         }
         }
     },
@@ -183,9 +189,10 @@ import axios from 'axios';
          this.taskData.date = '',
          this.taskData.time = '',
          this.taskData.detail = ''
+        //  window.location.reload();
         },
     getTasks(){
-            axios.get(window.apiUrl).then(response =>{
+            axios.get( window.location.origin + '/api/getTasks').then(response =>{
                 this.tasks = response.data
             }).catch(error => {
                 console.lor(errors)
@@ -195,6 +202,9 @@ import axios from 'axios';
     mounted() {
         this.getTasks()
     },
+    reloadPage() {
+    window.location.reload();
+    }
     }
 
 </script>
