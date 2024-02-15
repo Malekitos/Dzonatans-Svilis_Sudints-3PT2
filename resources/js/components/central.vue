@@ -11,28 +11,53 @@
 
     <div class="py-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="text-white dark:bg-gray-800 rounded-md text-3xl p-5 ">
+            <div class="text-white rounded-md text-3xl p-5 ">
 
-                <table class="table-auto">
-                    <thead>
-                       <tr>
-                            <th>#</th>
-                            <th>Title</th>
-                            <th>Date & Time</th>
-                            <th>Detail</th>
-                            <th>Actions</th>
-                       </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(task,index) in tasks":key="index">
-                            <td>{{index + 1}}</td>
-                            <td>{{task.title}}</td>
-                            <td>{{task.date}} | {{task.time}}</td>
-                            <td>{{task.detail.length < 10 ? task.detail : task.detail.substr(0,10)+'...'}}</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+<div class="relative overflow-x-auto rounded-md">
+    <table class="w-full text-xl text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Title
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Date
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Time
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Details
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <span class="sr-only">Edit</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr  v-for="(task,index) in tasks":key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{task.title}}
+                </th>
+                <td class="px-6 py-4">
+                    {{task.date}}
+                </td>
+                <td class="px-6 py-4">
+                   {{task.time}}
+                </td>
+                <td class="px-6 py-4">
+                    {{task.detail.length <= 20 ? task.detail : task.detail.substr(0,20)+'...'}}
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
 
             </div>
         </div>
@@ -174,6 +199,7 @@ import axios from 'axios';
   methods: {
     toggleModal: function(){
       this.showModal = !this.showModal;
+      this.getTasks();
     },
     isEmpty(value) {
     return value.trim() === '';
@@ -189,7 +215,6 @@ import axios from 'axios';
          this.taskData.date = '',
          this.taskData.time = '',
          this.taskData.detail = ''
-        //  window.location.reload();
         },
     getTasks(){
             axios.get( window.location.origin + '/api/getTasks').then(response =>{
