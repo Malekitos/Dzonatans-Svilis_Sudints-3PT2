@@ -1,72 +1,63 @@
 <template lang="">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="text-white dark:bg-gray-800 rounded-md text-3xl p-5 flex ">
-                <div class="flex-auto font-bold ">Tasks</div>
-                <div class=" bg-indigo-700 rounded-md p-2 px-4 py-2 hover:bg-indigo-800"><button v-on:click="toggleModal()">New Task</button></div>
+    <div class="my-10 max-w-7xl mx-auto ">
+            <div class="text-white dark:bg-gray-800 rounded-md text-3xl flex items-center py-2 my-5">
+                <div class="mx-3 flex-auto font-bold ">Tasks</div>
+               <div> <button v-on:click="toggleModal()" type="button" class="transition-all duration-200  text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">NEW TASK</button></div>
             </div>
+
+
+            <div class="text-white rounded-md text-3xl">
+        <div class="relative overflow-x-auto rounded-md">
+            <table class="w-full text-xl text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Title
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Date
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Time
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Details
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="sr-only">Edit</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  v-for="(task,index) in tasks":key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{task.title}}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{task.date}}
+                        </td>
+                        <td class="px-6 py-4">
+                        {{task.time}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{task.detail.length <= 20 ? task.detail : task.detail.substr(0,20)+'...'}}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="#" @click="editTask(task)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
-
-    <div class="py-3">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="text-white rounded-md text-3xl p-5 ">
-
-<div class="relative overflow-x-auto rounded-md">
-    <table class="w-full text-xl text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Title
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Date
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Time
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Details
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    <span class="sr-only">Edit</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr  v-for="(task,index) in tasks":key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{task.title}}
-                </th>
-                <td class="px-6 py-4">
-                    {{task.date}}
-                </td>
-                <td class="px-6 py-4">
-                   {{task.time}}
-                </td>
-                <td class="px-6 py-4">
-                    {{task.detail.length <= 20 ? task.detail : task.detail.substr(0,20)+'...'}}
-                </td>
-                <td class="px-6 py-4 text-right">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-
-
 
             </div>
         </div>
-    </div>
 
   <div>
 
-    <div v-if="showModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
-      <div class="relative w-auto my-6 mx-auto max-w-6xl">
+    <div v-if="showModal" class=" overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
+      <div class="relative w-auto my-6 mx-auto max-w-6xl ">
         <!--content-->
         <div class="border-0 rounded-md shadow-lg relative flex flex-col w-full bg-gray-800 outline-none focus:outline-none">
           <!--header-->
@@ -116,7 +107,7 @@
                     <button
                     v-else
                     @click="checkFields()"
-                    class="float-start border-2 rounded-md border-gray-600 text-gray-600 background-transparent font-bold uppercase p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150"
+                    class=" cursor-not-allowed float-start border-2 rounded-md border-gray-600 text-gray-600 background-transparent font-bold uppercase p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150"
                     type="button"
                     >
                     Create Task
