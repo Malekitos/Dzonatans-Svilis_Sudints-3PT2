@@ -9,10 +9,33 @@
         </div>
     </div>
 
+    <div class="py-3">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="text-white dark:bg-gray-800 rounded-md text-3xl p-5 ">
+                <table class="table-auto">
+                    <thead>
+                       <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Date & Time</th>
+                            <th>Detail</th>
+                            <th>Actions</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(task,index) in taks":key="index">
+                            <td>{{index + 1}}</td>
+                            <td>{{task.title}}</td>
+                            <td>{{task.date}} | {{task.time}}</td>
+                            <td>{{task.detail.length <= 10 ? task.detail : task.detail.substr(0,10)+'...'}}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-        <div v-for="(element, index) in tasks":key="index" class="">
-                    <p>{{element.title}}</p>
             </div>
+        </div>
+    </div>
 
   <div>
 
@@ -73,9 +96,6 @@
                     Create Task
         </button>
 
-
-
-
             <button class="float-end text-red-500 bg-transparent border-2 border-red-500 hover:bg-red-500 hover:text-white active:bg-red-600 font-bold uppercase p-2 px-4 py-2 rounded-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" v-on:click="toggleModal()">
               Close
             </button>
@@ -102,15 +122,15 @@ import axios from 'axios';
       dateEntered: false,
       showModal: false,
       error: '',
-      message: '',
-
       taskData: {
         title: '',
         date: '',
         time: '',
         detail: '',
       },
-      tasks: [],
+      tasks: [
+
+      ],
     }
   },
   computed: {
@@ -138,9 +158,9 @@ import axios from 'axios';
             this.dateEntered = false
             return
         }else{
-            this.error = ''
-            this.dateEntered = true
-        }
+                this.error = ''
+                 this.dateEntered = true
+                    }
         }
         }
     },
@@ -153,14 +173,28 @@ import axios from 'axios';
     return value.trim() === '';
   },
   storeTask(){
-
           axios.post(window.apiUrl, this.taskData).then(response => {
              console.log(response.data);
              }).catch(errors => {
             console.log(errors);
          });
+         this.error = '',
+         this.taskData.title = '',
+         this.taskData.date = '',
+         this.taskData.time = '',
+         this.taskData.detail = ''
+        },
+    getTasks(){
+            axios.get(window.apiUrl).then(response =>{
+                this.tasks = response.data
+            }).catch(error => {
+                console.lor(errors)
+            });
         }
-      }
+      },
+    mounted() {
+        this.getTasks()
+    },
     }
 
 </script>
