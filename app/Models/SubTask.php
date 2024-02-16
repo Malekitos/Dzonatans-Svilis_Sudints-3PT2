@@ -5,15 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class SubTask extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'task_id'
         'title',
         'date',
-        'time',
-        'detail',
-        'status',
+        'start_date',
+        'end_start',
     ];
+
+    public function task(){
+        return $this->hasOne('App\Models\Task')
+    }
 }

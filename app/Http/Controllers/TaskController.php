@@ -14,7 +14,7 @@ class TaskController extends Controller
             'date' => $request->date,
             'time' => $request->time,
             'detail' => $request->detail,
-
+            'status' => $request->status,
         ]);
 
         return response()->json('Task stored successfully!');
@@ -27,7 +27,15 @@ class TaskController extends Controller
             'date' => $request->date,
             'time' => $request->time,
             'detail' => $request->detail,
+        ]);
 
+        return response()->json('Task updated successfully!');
+    }
+
+    public function completeTask(Request $request, $id)
+    {
+        Task::where('id',$id)-> update([
+            'status' => 1,
         ]);
 
         return response()->json('Task updated successfully!');

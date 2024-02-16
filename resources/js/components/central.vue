@@ -8,12 +8,10 @@
 
 
             <div class="text-white rounded-md text-3xl">
-        <div class="relative overflow-x-auto rounded-md">
-            <table class="w-full text-xl text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <div class="relative overflow-x-auto rounded-md ">
+            <table class="w-full text-xl text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="p-4">
-                        </th>
                         <th scope="col" class="px-6 py-3">
                             Title
                         </th>
@@ -32,17 +30,18 @@
                         <th scope="col" class="px-6 py-3">
                             <span class="sr-only">Edit</span>
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="sr-only">Edit</span>
+                        </th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  v-for="(task,index) in tasks":key="index" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="w-4 p-4">
-                        <div class="flex items-center">
-                        <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                    </div>
-                    </td>
-                        <th scope="row" class="px-6 {{completed}} py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <tr  v-for="(task,index) in tasks":key="index"class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <th v-if="!task.status" scope="row" class="px-6 {{completed}} py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{task.title}}
+                        </th>
+                        <th v-if="task.status" scope="row" class="px-6 {{completed}} py-4 font-medium text-gray-900 whitespace-nowrap dark:text-green-500 underline underline-offset-auto">
                             {{task.title}}
                         </th>
                         <td class="px-6 py-4">
@@ -55,11 +54,15 @@
                             {{task.detail.length <= 20 ? task.detail : task.detail.substr(0,20)+'...'}}
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a href="#" @click="editTask(task)" v-on:click="toggleModal()"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td>
-                        <td class="px-6 py-4 text-right">
                             <a href="#" @click="removeTask(task)"  class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
                         </td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="#" v-if="!task.status" @click="editTask(task)" v-on:click="toggleModal()"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        </td>
+                        <td class="px-6 py-4 text-right" >
+                            <a href="#" v-if="!task.status" @click="completeTask(task)" class="font-medium text-red-600 dark:text-green-500 hover:underline">Complete</a>
+                        </td>
+
                     </tr>
                 </tbody>
             </table>
@@ -70,8 +73,9 @@
 
   <div>
 
+
     <div v-if="showModal" class=" overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
-      <div class="relative w-auto my-6 mx-auto max-w-6xl ">
+        <div class="relative w-auto my-6 mx-auto max-w-6xl ">
         <!--content-->
         <div class="border-0 rounded-md shadow-lg relative flex flex-col w-full bg-gray-800 outline-none focus:outline-none">
           <!--header-->
@@ -137,7 +141,7 @@
         </div>
       </div>
     </div>
-    <div v-if="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>
+    <div v-if="showModal" class="opacity-40 fixed inset-1 z-40 bg-black blur-xl"></div>
   </div>
 
 
@@ -165,6 +169,7 @@ import axios from 'axios';
         date: '',
         time: '',
         detail: '',
+        status: 0,
       },
       tasks: [],
     }
@@ -229,6 +234,20 @@ import axios from 'axios';
          this.taskData.detail = '',
          this.editMode = 'false'
   },
+  completeTask(task){
+    this.taskData = {
+       id: task.id,
+       status: 1,
+    }
+
+    axios.post(window.location.origin + '/api/completeTask/' + this.taskData.id, this.taskData.status).then(response => {
+                this.getTasks()
+             }).catch(errors => {
+            console.log(errors);
+         });
+    this.taskData.status = 0
+  },
+
   editTask(task){
     this.editMode = true,
     this.header = 'Edit task',
@@ -248,12 +267,18 @@ import axios from 'axios';
         date: task.date,
         time: task.time,
         detail: task.detail,
+        status: task.status,
     }
     axios.post(window.location.origin + '/api/removeTask/' + this.taskData.id).then(response => {
                 this.getTasks()
              }).catch(errors => {
             console.log(errors);
          });
+    this.taskData.title = '',
+    this.taskData.date = '',
+    this.taskData.time = '',
+    this.taskData.detail = '',
+    this.taskData.status = 0
   },
   clearData(){
     this.editMode = false,
@@ -264,7 +289,7 @@ import axios from 'axios';
     this.taskData.date = '',
     this.taskData.time = '',
     this.taskData.detail = '',
-    this.taskData.id = ''
+    this.taskData.id = 0
   },
   storeTask(){
           axios.post(window.apiUrl, this.taskData).then(response => {
@@ -276,7 +301,8 @@ import axios from 'axios';
          this.taskData.title = '',
          this.taskData.date = '',
          this.taskData.time = '',
-         this.taskData.detail = ''
+         this.taskData.detail = '',
+         this.taskData.status = 0
         },
     getTasks(){
             axios.get(window.location.origin + '/api/getTasks/').then(response =>{
