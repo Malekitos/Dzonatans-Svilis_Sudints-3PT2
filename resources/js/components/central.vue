@@ -91,12 +91,14 @@
 
                     <div class=" border-indigo-700 text-2xl text-gray-200">
 
-                        <input type="text" v-model="taskData.title" placeholder="Title" class="bg-gray-800 text-2xl m-4 ml-0">
-                        <input type="date" v-model="taskData.date" class="bg-gray-800 text-2xl m-4" >
-                        <input type="time" v-model="taskData.time" class="bg-gray-800 text-2xl m-4 mr-0">
+
+                        <input type="text" v-model="taskData.title" placeholder="Title" class="bg-gray-800 text-2xl m-4 ml-0 rounded-md">
+                        <input type="date" v-model="taskData.date" class="bg-gray-800 text-2xl m-4 rounded-md" >
+                        <input type="time" v-model="taskData.time" class="bg-gray-800 text-2xl m-4 mr-0 rounded-md">
 
                         <div class="">
-                            <input type="text" v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16">
+                            <!-- <input type="text" v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16"> -->
+                            <textarea v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16 rounded-md"></textarea>
                         </div>
 
                         <span  class="text-red-500 underline">{{error}}</span>
@@ -288,7 +290,6 @@ import axios from 'axios';
         this.getTasks()
     },
     }
-
 </script>
 
 
