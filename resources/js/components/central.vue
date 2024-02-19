@@ -1,10 +1,59 @@
 <template lang="">
 
-    <div class="my-10 max-w-7xl mx-auto ">
-            <div class="text-white dark:bg-gray-800 rounded-md text-3xl flex items-center py-2 my-5">
-                <div class="mx-3 flex-auto font-bold ">Tasks</div>
-               <div> <button v-on:click="toggleModal()" @click="clearData()" type="button" class="transition-all duration-200  text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">NEW TASK</button></div>
-            </div>
+    <div class="my-5 max-w-7xl mx-auto ">
+
+
+
+    <div class="text-right">
+        <button class="float-left transition-all duration-200  text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800" type="button" data-drawer-target="drawer-contact" data-drawer-show="drawer-contact" aria-controls="drawer-contact">
+            GROUPS
+            </button>
+            <button v-on:click="toggleModal()" @click="clearData()" type="button" class="transition-all duration-200  text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">NEW TASK</button>
+    </div>
+
+
+
+<!-- drawer component -->
+<div id="drawer-contact" class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-contact-label">
+   <h5 id="drawer-label" class="inline-flex items-center mb-6 text-base font-semibold text-gray-500 uppercase dark:text-gray-400"><svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
+    <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"/>
+  </svg>GROUP MENU</h5>
+   <button type="button" data-drawer-hide="drawer-contact" aria-controls="drawer-contact" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
+      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+      </svg>
+      <span class="sr-only">Close menu</span>
+   </button>
+   <form class="mb-6">
+      <div class="mb-6">
+         <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+         <input type="text" id="subject" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group Name" required v-model="groupName" />
+      </div>
+      <button type="submit" @click="createGroup()" class="text-white bg-blue-700 hover:bg-blue-800 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 block">Create</button>
+   </form>
+
+   <div>
+    <a href="#" @click="selectGroup('General')" class="inline-flex items-center justify-center p-5 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
+        <svg class="w-6 h-6 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+    <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 8v1h4V8m4 7H4a1 1 0 0 1-1-1V5h14v9a1 1 0 0 1-1 1ZM2 1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
+</svg>
+    <span class="w-full">General</span>
+</a>
+    </div>
+
+   <div v-for="(group,index) in groups":key="index">
+    <a href="#" @click="selectGroup(group.name)" class="inline-flex items-center justify-center p-5 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
+        <svg class="w-6 h-6 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+    <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 8v1h4V8m4 7H4a1 1 0 0 1-1-1V5h14v9a1 1 0 0 1-1 1ZM2 1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
+</svg>
+    <span class="w-full">{{group.name}}</span>
+</a>
+    </div>
+
+</div>
+
+
+
 
 
             <div class="text-white rounded-md text-3xl">
@@ -141,7 +190,7 @@
         </div>
       </div>
     </div>
-    <div v-if="showModal" class="opacity-40 fixed inset-1 z-40 bg-black blur-xl"></div>
+    <div v-if="showModal" class="opacity-40 fixed inset-0  bg-black "></div>
   </div>
 
 
@@ -151,6 +200,36 @@
 
 
 <script>
+import { onMounted } from 'vue'
+import {
+    initAccordions,
+    initCarousels,
+    initCollapses,
+    initDials,
+    initDismisses,
+    initDrawers,
+    initDropdowns,
+    initModals,
+    initPopovers,
+    initTabs,
+    initTooltips } from 'flowbite'
+
+// initialize components based on data attribute selectors
+onMounted(() => {
+    initAccordions();
+    initCarousels();
+    initCollapses();
+    initDials();
+    initDismisses();
+    initDrawers();
+    initDropdowns();
+    initModals();
+    initPopovers();
+    initTabs();
+    initTooltips();
+})
+
+
 import axios from 'axios';
 
     export default {
@@ -163,6 +242,7 @@ import axios from 'axios';
       header: 'Add new task',
       footerCreate: 'CREATE TASK',
       editMode: false,
+      groupName:'General',
       taskData: {
         id: '',
         title: '',
@@ -172,6 +252,7 @@ import axios from 'axios';
         status: 0,
       },
       tasks: [],
+      groups: [],
     }
   },
   computed: {
@@ -217,6 +298,7 @@ import axios from 'axios';
     toggleModal: function(){
       this.showModal = !this.showModal;
       this.getTasks();
+      this.getGroups();
     },
     isEmpty(value) {
     return value.trim() === '';
@@ -241,7 +323,8 @@ import axios from 'axios';
     }
 
     axios.post(window.location.origin + '/api/completeTask/' + this.taskData.id, this.taskData.status).then(response => {
-                this.getTasks()
+                this.getTasks(),
+                this.getGroups()
              }).catch(errors => {
             console.log(errors);
          });
@@ -270,7 +353,8 @@ import axios from 'axios';
         status: task.status,
     }
     axios.post(window.location.origin + '/api/removeTask/' + this.taskData.id).then(response => {
-                this.getTasks()
+                this.getTasks(),
+                this.getGroups()
              }).catch(errors => {
             console.log(errors);
          });
@@ -291,9 +375,24 @@ import axios from 'axios';
     this.taskData.detail = '',
     this.taskData.id = 0
   },
+
+  createGroup(){
+    axios.post(window.location.origin + '/api/createGroup/', { groupName: this.groupName }).then(response => {
+             this.getTasks(),
+             this.getGroups()
+             }).catch(errors => {
+            console.log(errors);
+         });
+         this.groupName = ''
+  },
+  selectGroup(selectedGroup){
+    this.groupName = selectedGroup
+  },
+
   storeTask(){
-          axios.post(window.apiUrl, this.taskData).then(response => {
-            this.getTasks()
+          axios.post(window.apiUrl, this.taskData, { groupName: this.groupName } ).then(response => {
+            this.getTasks(),
+            this.getGroups()
              }).catch(errors => {
             console.log(errors);
          });
@@ -305,15 +404,23 @@ import axios from 'axios';
          this.taskData.status = 0
         },
     getTasks(){
-            axios.get(window.location.origin + '/api/getTasks/').then(response =>{
-                this.tasks = response.data
-            }).catch(error => {
-                console.lor(errors)
-            });
-        }
-      },
+                axios.get(window.location.origin + '/api/getTasks/').then(response =>{
+                    this.tasks = response.data
+                }).catch(error => {
+                    console.lor(errors)
+                });
+            },
+        getGroups(){
+                axios.get(window.location.origin + '/api/getGroups/').then(response =>{
+                    this.groups = response.data
+                }).catch(error => {
+                    console.lor(errors)
+                });
+            },
+        },
     mounted() {
-        this.getTasks()
+        this.getTasks(),
+        this.getGroups()
     },
     }
 </script>

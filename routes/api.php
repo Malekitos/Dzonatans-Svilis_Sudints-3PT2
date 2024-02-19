@@ -14,3 +14,6 @@ Route::post('storeTask', [TaskController::class, 'storeTask']);
 Route::post('updateTask/{id}', [TaskController::class, 'updateTask']);
 Route::post('removeTask/{id}', [TaskController::class, 'removeTask']);
 Route::post('completeTask/{id}', [TaskController::class, 'completeTask']);
+
+Route::post('createGroup', [TaskController::class, 'createGroup']);
+Route::get('getGroups', [TaskController::class, 'getGroups']);

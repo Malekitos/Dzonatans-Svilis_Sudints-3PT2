@@ -2,6 +2,7 @@ import './bootstrap';
 
 import Alpine from 'alpinejs';
 import { createApp } from "vue";
+//import { createApp } from 'flowbite';
 import central from './components/central.vue';
 
 const app = createApp({

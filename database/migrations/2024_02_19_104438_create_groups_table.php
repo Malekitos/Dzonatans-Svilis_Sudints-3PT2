@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string('group');
             $table->string('owner');
-            $table->string('title');
-            $table->string('date');
-            $table->string('time');
-            $table->text('detail');
-            $table->boolean('status');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('groups');
     }
 };

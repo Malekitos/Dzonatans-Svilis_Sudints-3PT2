@@ -4,12 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Models\Group;
 
 class TaskController extends Controller
 {
+
+    public function createGroup(Request $request)
+    {
+        Group::create([
+            'name' => $request->groupName,
+        ]);
+
+        return response()->json('Group created successfully!');
+    }
+
+
+
     public function storeTask(Request $request)
     {
         Task::create([
+            'group' => $request->groupName,
             'title' => $request->title,
             'date' => $request->date,
             'time' => $request->time,
@@ -19,6 +33,8 @@ class TaskController extends Controller
 
         return response()->json('Task stored successfully!');
     }
+
+
 
     public function updateTask(Request $request, $id)
     {
@@ -44,6 +60,12 @@ class TaskController extends Controller
     public function getTasks()
     {
         return response()->json(Task::latest()->get());
+        return response()->json(Group::latest()->get());
+    }
+
+    public function getGroups()
+    {
+        return response()->json(Group::latest()->get());
     }
 
     public function removeTask($id){
