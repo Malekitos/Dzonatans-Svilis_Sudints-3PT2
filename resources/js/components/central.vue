@@ -11,7 +11,7 @@
             <button v-on:click="toggleModal()" @click="clearData()" type="button" class="float-right transition-all duration-200  text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">NEW TASK</button>
         </div>
 
-       <div class="text-white"> {{groupName}}</div>
+       <div class="text-white"> {{groupData.groupName}}</div>
 
 <!-- drawer component -->
 <div id="drawer-contact" class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-contact-label">
@@ -243,7 +243,6 @@ import axios from 'axios';
       footerCreate: 'CREATE TASK',
       editMode: false,
       insertGroup:'',
-      groupName: 'General',
       taskData: {
         id: '',
         title: '',
@@ -251,6 +250,9 @@ import axios from 'axios';
         time: '',
         detail: '',
         status: 0,
+      },
+      groupData:{
+        groupName: 'General'
       },
       tasks: [],
       groups: [],
@@ -385,11 +387,13 @@ import axios from 'axios';
              }).catch(errors => {
             console.log(errors);
          });
-
   },
 
   storeTask(){
-          axios.post(window.apiUrl, this.taskData).then(response => {
+          axios.post(window.apiUrl, {
+            var1: this.taskData,
+            var2: this.groupData
+          }).then(response => {
             this.getTasks(),
             this.getGroups()
              }).catch(errors => {

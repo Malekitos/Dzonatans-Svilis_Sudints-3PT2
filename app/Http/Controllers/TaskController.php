@@ -22,13 +22,15 @@ class TaskController extends Controller
 
     public function storeTask(Request $request)
     {
+        $taskData = $request->get('var1');
+        $groupData = $request->get('var2');
         Task::create([
-            'group' => $request->groupName,
-            'title' => $request->title,
-            'date' => $request->date,
-            'time' => $request->time,
-            'detail' => $request->detail,
-            'status' => $request->status,
+            'group' => $taskData['title'],
+            'title' => $taskData['title'],
+            'time' => $taskData['time'],
+            'date' => $taskData['date'],
+            'detail' => $taskData['detail'],
+            'status' => $taskData['status']
         ]);
 
         return response()->json('Task stored successfully!');
