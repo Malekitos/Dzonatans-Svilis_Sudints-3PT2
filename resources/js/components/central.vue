@@ -1,7 +1,8 @@
 <template lang="">
 
-    <div class="my-5 max-w-7xl mx-auto ">
 
+
+    <div class="my-5 max-w-7xl mx-auto ">
 
 
     <div class="text-left max-w-7xl">
@@ -11,7 +12,6 @@
             <button v-on:click="toggleModal()" @click="clearData()" type="button" class="float-right transition-all duration-200  text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">NEW TASK</button>
         </div>
 
-       <div class="text-white"> {{groupData.groupName}}</div>
 
 <!-- drawer component -->
 <div id="drawer-contact" class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-contact-label">
@@ -38,8 +38,12 @@
     <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 8v1h4V8m4 7H4a1 1 0 0 1-1-1V5h14v9a1 1 0 0 1-1 1ZM2 1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
 </svg>
     <span class="w-full">General</span>
+
 </a>
     </div>
+
+
+
 
 
    <div v-for="(group,index) in groups":key="index">
@@ -49,8 +53,8 @@
 </svg>
     <span class="w-full">{{group.name}}</span>
     </a>
-    </div>
 
+    </div>
 </div>
 
 
@@ -109,7 +113,7 @@
                             {{task.detail.length <= 20 ? task.detail : task.detail.substr(0,20)+'...'}}
                         </td>
                         <td class="px-6 py-4 text-right" >
-                            <a href="#" @click="removeTask(task)"  class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+                            <a href="#" @click="removeTask(task)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
                         </td>
                         <td class="px-6 py-4 text-right" >
                             <a href="#" v-if="!task.status" @click="editTask(task)" v-on:click="toggleModal()"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
@@ -118,7 +122,6 @@
                             <a href="#" v-if="!task.status" @click="completeTask(task)" class="font-medium text-red-600 dark:text-green-500 hover:underline">Complete</a>
                         </td>
                     </tr>
-
 
                 </tbody>
             </table>
@@ -157,8 +160,7 @@
                         <input type="time" v-model="taskData.time" class="bg-gray-800 text-2xl m-4 mr-0 rounded-md">
 
                         <div class="">
-                            <!-- <input type="text" v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16"> -->
-                            <textarea v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16 rounded-md"></textarea>
+                                    <textarea v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16 rounded-md"></textarea>
                         </div>
 
                         <span  class="text-red-500 underline">{{error}}</span>
@@ -201,8 +203,6 @@
   </div>
 
 
-
-
 </template>
 
 
@@ -214,7 +214,11 @@ import { initFlowbite } from 'flowbite'
 onMounted(() => {
     initFlowbite();
 })
-
+if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
 
 import axios from 'axios';
 
