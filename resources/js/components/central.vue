@@ -41,13 +41,14 @@
 </a>
     </div>
 
+
    <div v-for="(group,index) in groups":key="index">
     <a href="#" @click="selectGroup(group.name)" class="inline-flex items-center justify-center p-5 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
         <svg class="w-6 h-6 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
     <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 8v1h4V8m4 7H4a1 1 0 0 1-1-1V5h14v9a1 1 0 0 1-1 1ZM2 1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
 </svg>
     <span class="w-full">{{group.name}}</span>
-</a>
+    </a>
     </div>
 
 </div>
@@ -85,34 +86,40 @@
 
                     </tr>
                 </thead>
-                <tbody>
-                    <tr  v-for="(task,index) in tasks":key="index"class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th v-if="!task.status" scope="row" class="px-6 {{completed}} py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <tbody v-for="(task,index) in tasks":key="index">
+
+
+
+                        <tr v-if="checkGroup(task.grupa)" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+
+
+                        <td v-if="!task.status" scope="row" class="px-6 {{completed}} py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{task.title}}
-                        </th>
-                        <th v-if="task.status" scope="row" class="px-6 {{completed}} py-4 font-medium text-gray-900 whitespace-nowrap dark:text-green-500 underline underline-offset-auto">
+                        </td>
+                        <td v-if="task.status"  scope="row" class="px-6 {{completed}} py-4 font-medium text-gray-900 whitespace-nowrap dark:text-green-500 underline underline-offset-auto">
                             {{task.title}}
-                        </th>
+                        </td>
                         <td class="px-6 py-4">
                             {{task.date}}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4" >
                         {{task.time}}
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4" >
                             {{task.detail.length <= 20 ? task.detail : task.detail.substr(0,20)+'...'}}
                         </td>
-                        <td class="px-6 py-4 text-right">
+                        <td class="px-6 py-4 text-right" >
                             <a href="#" @click="removeTask(task)"  class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
                         </td>
-                        <td class="px-6 py-4 text-right">
+                        <td class="px-6 py-4 text-right" >
                             <a href="#" v-if="!task.status" @click="editTask(task)" v-on:click="toggleModal()"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                         </td>
-                        <td class="px-6 py-4 text-right" >
+                        <td class="px-6 py-4 text-right">
                             <a href="#" v-if="!task.status" @click="completeTask(task)" class="font-medium text-red-600 dark:text-green-500 hover:underline">Complete</a>
                         </td>
-
                     </tr>
+
+
                 </tbody>
             </table>
         </div>
@@ -201,32 +208,11 @@
 
 <script>
 import { onMounted } from 'vue'
-import {
-    initAccordions,
-    initCarousels,
-    initCollapses,
-    initDials,
-    initDismisses,
-    initDrawers,
-    initDropdowns,
-    initModals,
-    initPopovers,
-    initTabs,
-    initTooltips } from 'flowbite'
+import { initFlowbite } from 'flowbite'
 
 // initialize components based on data attribute selectors
 onMounted(() => {
-    initAccordions();
-    initCarousels();
-    initCollapses();
-    initDials();
-    initDismisses();
-    initDrawers();
-    initDropdowns();
-    initModals();
-    initPopovers();
-    initTabs();
-    initTooltips();
+    initFlowbite();
 })
 
 
@@ -242,6 +228,7 @@ import axios from 'axios';
       header: 'Add new task',
       footerCreate: 'CREATE TASK',
       editMode: false,
+      correctGroup: false,
       insertGroup:'',
       taskData: {
         id: '',
@@ -300,12 +287,19 @@ import axios from 'axios';
   methods: {
     toggleModal: function(){
       this.showModal = !this.showModal;
-      this.getTasks();
-      this.getGroups();
     },
     isEmpty(value) {
     return value.trim() === '';
   },
+  checkGroup(grupa){
+
+    if(grupa===this.groupData.groupName){
+        return true
+    }
+    },
+
+
+
   updateTask(){
     axios.post(window.location.origin + '/api/updateTask/' + this.taskData.id, this.taskData).then(response => {
                 this.getTasks()
@@ -326,8 +320,7 @@ import axios from 'axios';
     }
 
     axios.post(window.location.origin + '/api/completeTask/' + this.taskData.id, this.taskData.status).then(response => {
-                this.getTasks(),
-                this.getGroups()
+                this.getTasks()
              }).catch(errors => {
             console.log(errors);
          });
@@ -356,8 +349,7 @@ import axios from 'axios';
         status: task.status,
     }
     axios.post(window.location.origin + '/api/removeTask/' + this.taskData.id).then(response => {
-                this.getTasks(),
-                this.getGroups()
+                this.getTasks()
              }).catch(errors => {
             console.log(errors);
          });
@@ -382,7 +374,6 @@ import axios from 'axios';
   createGroup(){
 
     axios.post(window.location.origin + '/api/createGroup/', this.groupData).then(response => {
-             this.getTasks(),
              this.getGroups()
              }).catch(errors => {
             console.log(errors);
@@ -394,8 +385,7 @@ import axios from 'axios';
             var1: this.taskData,
             var2: this.groupData
           }).then(response => {
-            this.getTasks(),
-            this.getGroups()
+           this.getTasks()
              }).catch(errors => {
             console.log(errors);
          });
@@ -406,23 +396,23 @@ import axios from 'axios';
          this.taskData.detail = '',
          this.taskData.status = 0
         },
-    getTasks(){
-                axios.get(window.location.origin + '/api/getTasks/').then(response =>{
-                    this.tasks = response.data
-                }).catch(error => {
-                    console.lor(errors)
-                });
-            },
+        getTasks(){
+    axios.get(window.location.origin + '/api/getTasks/').then(response =>{
+        this.tasks = response.data
+    }).catch(error => {
+        console.log(error)
+    });
+},
         getGroups(){
-                axios.get(window.location.origin + '/api/getGroups/').then(response =>{
-                    this.groups = response.data
-                }).catch(error => {
-                    console.lor(errors)
-                });
-            },
+            axios.get(window.location.origin + '/api/getGroups/').then(response =>{
+                this.groups = response.data
+            }).catch(error => {
+                console.log(error)
+            });
+},
         selectGroup(select){
             this.groupData.groupName = select
-        }
+        },
         },
     mounted() {
         this.getTasks(),

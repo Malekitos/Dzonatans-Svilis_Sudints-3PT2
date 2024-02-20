@@ -27,7 +27,7 @@ class TaskController extends Controller
 
         Task::create([
             'grupa' => $groupData['groupName'],
-            'title' => $taskData['detail'],
+            'title' => $taskData['title'],
             'time' => $taskData['time'],
             'date' => $taskData['date'],
             'detail' => $taskData['detail'],
@@ -64,7 +64,6 @@ class TaskController extends Controller
     public function getTasks()
     {
         return response()->json(Task::latest()->get());
-        return response()->json(Group::latest()->get());
     }
 
     public function getGroups()
