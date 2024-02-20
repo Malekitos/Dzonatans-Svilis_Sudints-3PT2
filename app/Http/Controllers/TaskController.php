@@ -24,13 +24,15 @@ class TaskController extends Controller
     {
         $taskData = $request->get('var1');
         $groupData = $request->get('var2');
+
         Task::create([
-            'group' => $taskData['title'],
-            'title' => $taskData['title'],
+            'grupa' => $groupData['groupName'],
+            'title' => $taskData['detail'],
             'time' => $taskData['time'],
             'date' => $taskData['date'],
             'detail' => $taskData['detail'],
-            'status' => $taskData['status']
+            'status' => $taskData['status'],
+
         ]);
 
         return response()->json('Task stored successfully!');
