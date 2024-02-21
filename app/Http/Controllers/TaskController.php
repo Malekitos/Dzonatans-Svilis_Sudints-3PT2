@@ -75,4 +75,10 @@ class TaskController extends Controller
         Task::where('id', $id)-> delete();
         return response()->json('Task deleted successfully!');
     }
+
+    public function removeGroup($groupName){
+        Group::where('name', $groupName)-> delete();
+        Task::where('grupa', $groupName)-> delete();
+        return response()->json('Group deleted successfully!');
+    }
 }

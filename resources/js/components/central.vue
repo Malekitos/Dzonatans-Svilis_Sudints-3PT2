@@ -53,8 +53,11 @@
 </svg>
     <span class="w-full">{{group.name}}</span>
     </a>
-
+   <button @click="removeGroup(group)" class="bg-red-600 opacity-80 rounded-full ml-2 hover:bg-red-700"> <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"/>
+  </svg></button>
     </div>
+
 </div>
 
 
@@ -243,7 +246,8 @@ import axios from 'axios';
         status: 0,
       },
       groupData:{
-        groupName: 'General'
+        groupName: 'General',
+        id: '',
       },
       tasks: [],
       groups: [],
@@ -363,6 +367,24 @@ import axios from 'axios';
     this.taskData.detail = '',
     this.taskData.status = 0
   },
+
+
+  removeGroup(group){
+    this.groupData = {
+        id: group.id,
+        groupName: group.name,
+
+    }
+    axios.post(window.location.origin + '/api/removeGroup/' + this.groupData.groupName).then(response => {
+                this.getGroups()
+             }).catch(errors => {
+            console.log(errors);
+         });
+
+         this.groupData.groupName = 'General'
+        },
+
+
   clearData(){
     this.editMode = false,
     this.header = 'Add new task',
