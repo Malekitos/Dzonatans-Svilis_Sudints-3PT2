@@ -12,6 +12,9 @@
             <button v-on:click="toggleModal()" @click="clearData()" type="button" class="float-right transition-all duration-200  text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">NEW TASK</button>
         </div>
 
+        <div>
+
+  </div>
 
 <!-- drawer component -->
 <div id="drawer-contact" class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-contact-label">
@@ -29,7 +32,7 @@
          <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
          <input type="text" v-model="groupData.groupName" id="subject" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group Name" required  />
       </div>
-      <button type="submit" @click="createGroup()" class="text-white bg-blue-700 hover:bg-blue-800 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 block">Create</button>
+      <button type="submit" @click="createGroup();notifyGood()" class="text-white bg-blue-700 hover:bg-blue-800 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 block">Create</button>
    </form>
 
    <div>
@@ -53,7 +56,7 @@
 </svg>
     <span class="w-full">{{group.name}}</span>
     </a>
-   <button @click="removeGroup(group)" class="bg-red-600 opacity-80 rounded-full ml-2 hover:bg-red-700"> <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+   <button @click="removeGroup(group);notifyBad()" class="bg-red-600 opacity-80 rounded-lg ml-2 hover:bg-red-700"> <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"/>
   </svg></button>
     </div>
@@ -116,10 +119,10 @@
                             {{task.detail.length <= 20 ? task.detail : task.detail.substr(0,20)+'...'}}
                         </td>
                         <td class="px-6 py-4 text-right" >
-                            <a href="#" @click="removeTask(task)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+                            <a href="#" @click="removeTask(task);notifyBad()" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
                         </td>
                         <td class="px-6 py-4 text-right" >
-                            <a href="#" v-if="!task.status" @click="editTask(task)" v-on:click="toggleModal()"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <a href="#" v-if="!task.status" @click="editTask(task);" v-on:click="toggleModal()"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                         </td>
                         <td class="px-6 py-4 text-right">
                             <a href="#" v-if="!task.status" @click="completeTask(task)" class="font-medium text-red-600 dark:text-green-500 hover:underline">Complete</a>
@@ -196,7 +199,7 @@
                     v-if="isFormValid"
                     class="float-start border-2 rounded-md border-green-600 text-green-600 background-transparent font-bold uppercase p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-600 hover:text-white"
                     type="button"
-                    v-on:click="toggleModal()"
+                    v-on:click="toggleModal();notifyGood()"
                     >
                     {{footerCreate}}
         </button>
@@ -224,6 +227,8 @@
 
 
 <script>
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import { onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
 
@@ -240,6 +245,10 @@ if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localS
 import axios from 'axios';
 
     export default {
+        setup() {
+
+   },
+
   name: "large-modal",
   data() {
     return {
@@ -453,6 +462,24 @@ import axios from 'axios';
         selectGroup(select){
             this.groupData.groupName = select
         },
+
+        notifyGood(){
+        toast("Successful add!", {
+        "theme": "dark",
+        "type": "success",
+        "dangerouslyHTMLString": true,
+
+        })
+        return { notify }
+    },
+    notifyBad(){
+        toast("Successful remove", {
+        "theme": "dark",
+        "type": "error",
+        "dangerouslyHTMLString": true
+        })
+        return { notify }
+    }
         },
     mounted() {
         this.getTasks(),
