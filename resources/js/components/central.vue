@@ -142,7 +142,7 @@
         <div class="border-0 rounded-md shadow-lg relative flex flex-col w-full bg-gray-800 outline-none focus:outline-none">
           <!--header-->
           <div class="flex items-start justify-between p-5 border-b border-solid border-gray-600">
-            <h3 class="text-4xl font-medium leading-6 text-gray-200">
+            <h3 class="text-3xl font-medium leading-6 text-gray-200">
               {{header}}
             </h3>
             <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" v-on:click="toggleModal()">
@@ -152,25 +152,39 @@
           </div>
           <!--body-->
           <div class="relative p-6 flex-auto">
-            <div class="mt-2">
-                <p class="text-xl text-white">
-
-                    <div class=" border-indigo-700 text-2xl text-gray-200">
+                    <div class="grid gap-6 mb-3 md:grid-cols-3">
 
 
-                        <input type="text" v-model="taskData.title" placeholder="Title" class="bg-gray-800 text-2xl m-4 ml-0 rounded-md">
+        <div>
+            <label for="first_name"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+            <input type="text" id="first_name" v-model="taskData.title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
+        </div>
+        <div>
+            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+            <input type="date" id="last_name"  v-model="taskData.date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
+        </div>
+        <div>
+            <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">time</label>
+            <input type="time" id="company" v-model="taskData.time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Flowbite" required />
+        </div>
+    </div>
+    <div class="mb-6">
+            <label for="message"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Detail</label>
+            <textarea id="message"  v-model="taskData.detail" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+     </div>
+
+
+
+                        <!-- <input type="text" v-model="taskData.title" placeholder="Title" class="bg-gray-800 text-2xl m-4 ml-0 rounded-md">
                         <input type="date" v-model="taskData.date" class="bg-gray-800 text-2xl m-4 rounded-md" >
                         <input type="time" v-model="taskData.time" class="bg-gray-800 text-2xl m-4 mr-0 rounded-md">
 
                         <div class="">
                                     <textarea v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16 rounded-md"></textarea>
-                        </div>
+                        </div> -->
 
-                        <span  class="text-red-500 underline">{{error}}</span>
-                    </div>
+                        <div><span  class="text-red-500 underline text-xl">{{error}}</span></div>
 
-                </p>
-              </div>
           </div>
           <!--footer-->
           <div class="p-6 border-t border-solid border-gray-600">
