@@ -1,7 +1,5 @@
 <template lang="">
 
-
-
     <div class="my-5 max-w-7xl mx-auto ">
 
 
@@ -219,18 +217,18 @@
         </div>
       </div>
     </div>
-    <div v-if="showModal" class="opacity-40 fixed inset-0  bg-black "></div>
+    <div v-if="showModal" class="opacity-40 fixed inset-0 bg-black "></div>
   </div>
 
-
+  <loader-component :loading-status="loadingStatus" />
 </template>
 
 
 <script>
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-import { onMounted } from 'vue'
-import { initFlowbite } from 'flowbite'
+import { onMounted } from 'vue';
+import { initFlowbite } from 'flowbite';
 
 // initialize components based on data attribute selectors
 onMounted(() => {
@@ -246,7 +244,6 @@ import axios from 'axios';
 
     export default {
         setup() {
-
    },
 
   name: "large-modal",
@@ -323,7 +320,6 @@ import axios from 'axios';
     return value.trim() === '';
   },
   checkGroup(grupa){
-
     if(grupa===this.groupData.groupName){
         return true
     }
@@ -332,6 +328,7 @@ import axios from 'axios';
 
 
   updateTask(){
+    this.loadingStatus = false,
     axios.post(window.location.origin + '/api/updateTask/' + this.taskData.id, this.taskData).then(response => {
                 this.getTasks()
              }).catch(errors => {
@@ -446,8 +443,12 @@ import axios from 'axios';
          this.taskData.status = 0
         },
         getTasks(){
+
+            this.loadingStatus = true,
+
     axios.get(window.location.origin + '/api/getTasks/').then(response =>{
-        this.tasks = response.data
+        this.tasks = response.data,
+        this.loadingStatus = false
     }).catch(error => {
         console.log(error)
     });
