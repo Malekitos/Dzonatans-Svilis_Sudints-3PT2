@@ -15,7 +15,7 @@ export default {
     ],
 
     module: {
-        darkMode: 'class',
+        darkMode: 'selector',
         // ...
       },
 
@@ -30,6 +30,7 @@ export default {
     plugins: [
         forms,
         require('flowbite/plugin'),
+        require("daisyui"),
     ],
 };
 

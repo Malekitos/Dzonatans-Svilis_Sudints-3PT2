@@ -2,7 +2,6 @@
 
     <div class="my-5 max-w-7xl mx-auto ">
 
-
     <div class="text-left max-w-7xl">
         <button class="transition-all duration-200  text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800" type="button" data-drawer-target="drawer-contact" data-drawer-show="drawer-contact" aria-controls="drawer-contact">
             GROUPS
@@ -30,7 +29,7 @@
          <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
          <input type="text" v-model="groupData.groupName" id="subject" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group Name" required  />
       </div>
-      <button type="submit" @click="createGroup();notifyGood()" class="text-white bg-blue-700 hover:bg-blue-800 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 block">Create</button>
+      <button type="submit" @click="createGroup()" class="text-white bg-blue-700 hover:bg-blue-800 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 block">Create</button>
    </form>
 
    <div>
@@ -43,26 +42,33 @@
 </a>
     </div>
 
-
-
-
-
-   <div v-for="(group,index) in groups":key="index">
-    <a href="#" @click="selectGroup(group.name)" class="inline-flex items-center justify-center p-5 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
-        <svg class="w-6 h-6 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-    <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 8v1h4V8m4 7H4a1 1 0 0 1-1-1V5h14v9a1 1 0 0 1-1 1ZM2 1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
-</svg>
-    <span class="w-full">{{group.name}}</span>
-    </a>
-   <button @click="removeGroup(group);notifyBad()" class="bg-red-600 opacity-80 rounded-lg ml-2 hover:bg-red-700"> <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"/>
-  </svg></button>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr  v-for="(group,index) in groups":key="index">
+                <td>
+                    <a href="#" @click="selectGroup(group.name)" class="inline-flex items-center justify-center p-5 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
+                    <svg class="w-6 h-6 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 8v1h4V8m4 7H4a1 1 0 0 1-1-1V5h14v9a1 1 0 0 1-1 1ZM2 1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
+            </svg>
+                <span class="w-full">{{group.name}}</span>
+                </a>
+                </td>
+                <td>
+                    <remove-group :group="group" @click="getGroups();"></remove-group>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+   <div>
     </div>
 
 </div>
-
-
-
 
 
             <div class="text-white rounded-md text-3xl">
@@ -96,10 +102,7 @@
                 </thead>
                 <tbody v-for="(task,index) in tasks":key="index">
 
-
-
                         <tr v-if="checkGroup(task.grupa)" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
 
                         <td v-if="!task.status" scope="row" class="px-6 {{completed}} py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{task.title}}
@@ -117,7 +120,7 @@
                             {{task.detail.length <= 20 ? task.detail : task.detail.substr(0,20)+'...'}}
                         </td>
                         <td class="px-6 py-4 text-right" >
-                            <a href="#" @click="removeTask(task);notifyBad()" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+                            <remove-task :task="task" @click="getTasks()"/>
                         </td>
                         <td class="px-6 py-4 text-right" >
                             <a href="#" v-if="!task.status" @click="editTask(task);" v-on:click="toggleModal()"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
@@ -126,15 +129,13 @@
                             <a href="#" v-if="!task.status" @click="completeTask(task)" class="font-medium text-red-600 dark:text-green-500 hover:underline">Complete</a>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
-
             </div>
         </div>
-
   <div>
+
 
 
     <div v-if="showModal" class=" overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
@@ -175,15 +176,6 @@
      </div>
 
 
-
-                        <!-- <input type="text" v-model="taskData.title" placeholder="Title" class="bg-gray-800 text-2xl m-4 ml-0 rounded-md">
-                        <input type="date" v-model="taskData.date" class="bg-gray-800 text-2xl m-4 rounded-md" >
-                        <input type="time" v-model="taskData.time" class="bg-gray-800 text-2xl m-4 mr-0 rounded-md">
-
-                        <div class="">
-                                    <textarea v-model="taskData.detail" placeholder="Details" class="bg-gray-800 text-2xl m-4 ml-0 w-full pb-16 rounded-md"></textarea>
-                        </div> -->
-
                         <div><span  class="text-red-500 underline text-xl">{{error}}</span></div>
 
           </div>
@@ -197,7 +189,7 @@
                     v-if="isFormValid"
                     class="float-start border-2 rounded-md border-green-600 text-green-600 background-transparent font-bold uppercase p-2 px-4 py-2 outline-none focus:outline-none ease-linear transition-all duration-150 hover:bg-green-600 hover:text-white"
                     type="button"
-                    v-on:click="toggleModal();notifyGood()"
+                    v-on:click="toggleModal()"
                     >
                     {{footerCreate}}
         </button>
@@ -218,9 +210,9 @@
       </div>
     </div>
     <div v-if="showModal" class="opacity-40 fixed inset-0 bg-black "></div>
-  </div>
 
-  <loader-component :loading-status="loadingStatus" />
+    <loader-component :loading-status="loadingStatus"></loader-component>
+  </div>
 </template>
 
 
@@ -240,9 +232,11 @@ if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localS
         document.documentElement.classList.remove('dark')
     }
 
-import axios from 'axios';
-
+ import axios from 'axios';
     export default {
+        props : ({
+        user: Object
+    }),
         setup() {
    },
 
@@ -267,7 +261,7 @@ import axios from 'axios';
       },
       groupData:{
         groupName: 'General',
-        id: '',
+        groupOwner: this.user.name
       },
       tasks: [],
       groups: [],
@@ -327,35 +321,7 @@ import axios from 'axios';
 
 
 
-  updateTask(){
-    this.loadingStatus = false,
-    axios.post(window.location.origin + '/api/updateTask/' + this.taskData.id, this.taskData).then(response => {
-                this.getTasks()
-             }).catch(errors => {
-            console.log(errors);
-         });
-         this.error = '',
-         this.taskData.title = '',
-         this.taskData.date = '',
-         this.taskData.time = '',
-         this.taskData.detail = '',
-         this.editMode = 'false'
-  },
-  completeTask(task){
-    this.taskData = {
-       id: task.id,
-       status: 1,
-    }
-
-    axios.post(window.location.origin + '/api/completeTask/' + this.taskData.id, this.taskData.status).then(response => {
-                this.getTasks()
-             }).catch(errors => {
-            console.log(errors);
-         });
-    this.taskData.status = 0
-  },
-
-  editTask(task){
+    editTask(task){
     this.editMode = true,
     this.header = 'Edit task',
     this.footerCreate = 'EDIT TASK',
@@ -367,43 +333,83 @@ import axios from 'axios';
         detail: task.detail,
     }
   },
-  removeTask(task){
-    this.taskData = {
-        id: task.id,
-        title: task.title,
-        date: task.date,
-        time: task.time,
-        detail: task.detail,
-        status: task.status,
-    }
-    axios.post(window.location.origin + '/api/removeTask/' + this.taskData.id).then(response => {
-                this.getTasks()
-             }).catch(errors => {
-            console.log(errors);
-         });
+  clearData(){
+    this.editMode = false,
+    this.header = 'Add new task',
+    this.footerCreate = 'CREATE TASK',
+    this.error = '',
     this.taskData.title = '',
     this.taskData.date = '',
     this.taskData.time = '',
     this.taskData.detail = '',
-    this.taskData.status = 0
+    this.taskData.id = 0
   },
 
-
-  removeGroup(group){
-    this.groupData = {
-        id: group.id,
-        groupName: group.name,
-
-    }
-    axios.post(window.location.origin + '/api/removeGroup/' + this.groupData.groupName).then(response => {
-                this.getGroups()
+  storeTask(){
+        this.loadingStatus = true,
+          axios.post(window.apiUrl, {
+            var1: this.taskData,
+            var2: this.groupData
+          }).then(response => {
+            this.loadingStatus = true,
+           this.getTasks(),
+           this.notifyGood()
              }).catch(errors => {
             console.log(errors);
          });
-
-         this.groupData.groupName = 'General'
+         this.error = '',
+         this.taskData.title = '',
+         this.taskData.date = '',
+         this.taskData.time = '',
+         this.taskData.detail = '',
+         this.taskData.status = 0
         },
+    getTasks(){
+        this.loadingStatus = true,
+        axios.get(window.location.origin + '/api/getTasks/').then(response =>{
+        this.tasks = response.data,
+        this.loadingStatus = false
+        }).catch(error => {
+        console.log(error)
+        });
+    },
+    toggleModal: function(){
+      this.showModal = !this.showModal;
+    },
+    isEmpty(value) {
+    return value.trim() === '';
+  },
+  updateTask(){
+    this.loadingStatus = true,
+    axios.post(window.location.origin + '/api/updateTask/' + this.taskData.id, this.taskData).then(response => {
+                this.getTasks(),
+                this.notifyEdit(),
+                this.loadingStatus = false
+             }).catch(errors => {
+            console.log(errors);
+         });
+         this.error = '',
+         this.taskData.title = '',
+         this.taskData.date = '',
+         this.taskData.time = '',
+         this.taskData.detail = '',
+         this.editMode = 'false'
+  },
+  completeTask(task){
+    this.loadingStatus = true,
+    this.taskData = {
+       id: task.id,
+       status: 1,
+    }
 
+    axios.post(window.location.origin + '/api/completeTask/' + this.taskData.id, this.taskData.status).then(response => {
+                this.getTasks(),
+                this.loadingStatus = false
+             }).catch(errors => {
+            console.log(errors);
+         });
+    this.taskData.status = 0
+  },
 
   clearData(){
     this.editMode = false,
@@ -418,44 +424,21 @@ import axios from 'axios';
   },
 
   createGroup(){
-
+    this.loadingStatus = true,
     axios.post(window.location.origin + '/api/createGroup/', this.groupData).then(response => {
-             this.getGroups()
+             this.getGroups(),
+             this.loadingStatus = false,
+             this.notifyGood()
              }).catch(errors => {
             console.log(errors);
          });
   },
 
-  storeTask(){
-          axios.post(window.apiUrl, {
-            var1: this.taskData,
-            var2: this.groupData
-          }).then(response => {
-           this.getTasks()
-             }).catch(errors => {
-            console.log(errors);
-         });
-         this.error = '',
-         this.taskData.title = '',
-         this.taskData.date = '',
-         this.taskData.time = '',
-         this.taskData.detail = '',
-         this.taskData.status = 0
-        },
-        getTasks(){
-
-            this.loadingStatus = true,
-
-    axios.get(window.location.origin + '/api/getTasks/').then(response =>{
-        this.tasks = response.data,
-        this.loadingStatus = false
-    }).catch(error => {
-        console.log(error)
-    });
-},
         getGroups(){
+            this.loadingStatus = true,
             axios.get(window.location.origin + '/api/getGroups/').then(response =>{
-                this.groups = response.data
+                this.groups = response.data,
+                this.loadingStatus = false
             }).catch(error => {
                 console.log(error)
             });
@@ -474,14 +457,23 @@ import axios from 'axios';
         return { notify }
     },
     notifyBad(){
-        toast("Successful remove", {
+        toast("Successful remove!", {
         "theme": "dark",
         "type": "error",
         "dangerouslyHTMLString": true
         })
         return { notify }
+    },
+    notifyEdit(){
+        toast("Successful edit!", {
+        "theme": "dark",
+        "type": "info",
+        "dangerouslyHTMLString": true
+        })
+        return { notify }
     }
-        },
+    },
+
     mounted() {
         this.getTasks(),
         this.getGroups()
@@ -491,6 +483,4 @@ import axios from 'axios';
 
 
 <style>
-
-
 </style>

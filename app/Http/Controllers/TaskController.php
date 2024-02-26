@@ -13,6 +13,7 @@ class TaskController extends Controller
     {
         Group::create([
             'name' => $request->groupName,
+            'owner' => $request->groupOwner,
         ]);
 
         return response()->json('Group created successfully!');

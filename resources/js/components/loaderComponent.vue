@@ -21,6 +21,11 @@ export default {
         HalfCircleSpinner
     },
     props: ['loadingStatus'],
+    data() {
+        return{
+            loadingStatus: false
+        }
+    }
     }
 
 </script>
