@@ -8,6 +8,7 @@ import central from './components/central.vue';
 import removeTask from './components/removeTask.vue';
 import removeGroup from './components/removeGroup.vue';
 import loaderComponent from './components/loaderComponent.vue';
+import permissionsGroup from './components/permissionsGroup.vue';
 
 
 
@@ -17,6 +18,7 @@ app.component('loaderComponent', loaderComponent);
 app.component('central', central);
 app.component('removeTask', removeTask);
 app.component('removeGroup', removeGroup);
+app.component('permissionsGroup', permissionsGroup);
 
 
  window.apiUrl = window.location.origin + '/api/storeTask/';

@@ -10,7 +10,6 @@
         </div>
 
         <div>
-
   </div>
 
 <!-- drawer component -->
@@ -24,13 +23,12 @@
       </svg>
       <span class="sr-only">Close menu</span>
    </button>
-   <form class="mb-6">
       <div class="mb-6">
          <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
          <input type="text" v-model="groupData.groupName" id="subject" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Group Name" required  />
       </div>
       <button type="submit" @click="createGroup()" class="text-white bg-blue-700 hover:bg-blue-800 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 block">Create</button>
-   </form>
+
 
    <div>
     <a href="#" @click="selectGroup('General')" class="inline-flex items-center justify-center p-5 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
@@ -47,11 +45,12 @@
             <tr>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             <tr  v-for="(group,index) in groups":key="index">
-                <td>
+                <td v-if="checkAccess(group.owner)">
                     <a href="#" @click="selectGroup(group.name)" class="inline-flex items-center justify-center p-5 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
                     <svg class="w-6 h-6 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                 <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 8v1h4V8m4 7H4a1 1 0 0 1-1-1V5h14v9a1 1 0 0 1-1 1ZM2 1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1Z"/>
@@ -59,7 +58,10 @@
                 <span class="w-full">{{group.name}}</span>
                 </a>
                 </td>
-                <td>
+                <td v-if="checkAccess(group.owner)">
+                    <permissions-group></permissions-group>
+                </td>
+                <td v-if="checkAccess(group.owner)">
                     <remove-group :group="group" @click="getGroups();"></remove-group>
                 </td>
             </tr>
@@ -261,7 +263,7 @@ if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localS
       },
       groupData:{
         groupName: 'General',
-        groupOwner: this.user.name
+        groupOwner: this.user.email
       },
       tasks: [],
       groups: [],
@@ -445,6 +447,14 @@ if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localS
 },
         selectGroup(select){
             this.groupData.groupName = select
+        },
+
+        checkAccess(groupUser){
+            if(groupUser===this.groupData.groupOwner){
+                return true
+            }else{
+                return false
+            }
         },
 
         notifyGood(){
