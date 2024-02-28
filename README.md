@@ -16,12 +16,12 @@ Lai izveidotu šo lietotni lokāli, jums būs nepieciešams:
 
 ## Instalēšana
 
-1. **Lejupielādējiet** projektu uz savu datoru:
+1. **Lejupielādējiet** projektu uz savu datoru: (rakstam komandu Linux terminala)
     ```bash
     curl -s https://laravel.build/todo-web | bash
     ```
 
-2. **Izveidojiet** projektu mapi `todo-web`, kas atrodas Linux mājas direktorijā.
+2. **Parvietojit** un nometiet failus, kas lejupielādēti no github, projekta mape `todo-web`, kas atrodas Linux mājas direktorijā.
 
 3. Linux terminālā pārejiet uz `todo-web` mapi:
     ```bash
