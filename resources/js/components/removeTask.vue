@@ -19,11 +19,15 @@
 
 <div v-if="showModal" class="opacity-40 fixed inset-0 bg-black "></div>
 
+<loader-component :loading-status="loadingStatus"></loader-component>
 
     </div>
 
 </template>
 <script>
+
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 export default {
     data(){
         return{
@@ -44,11 +48,20 @@ export default {
         removeTask(){
             this.loadingStatus = true,
             axios.post(window.location.origin + '/api/removeTask/' + this.task.id).then(response => {
-                        this.loadingStatus = true
+                        this.loadingStatus = false,
+                        notifyBad()
                     }).catch(errors => {
                     console.log(errors);
                 });
                 },
+                notifyBad(){
+        toast("Successful remove!", {
+        "theme": "dark",
+        "type": "error",
+        "dangerouslyHTMLString": true
+        })
+        return { notify }
+    },
     },
 }
 </script>

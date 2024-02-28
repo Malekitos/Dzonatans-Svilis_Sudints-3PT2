@@ -18,3 +18,7 @@ Route::post('completeTask/{id}', [TaskController::class, 'completeTask']);
 Route::post('createGroup', [TaskController::class, 'createGroup']);
 Route::get('getGroups', [TaskController::class, 'getGroups']);
 Route::post('removeGroup/{id}', [TaskController::class, 'removeGroup']);
+
+Route::post('createPermission', [TaskController::class, 'createPermission']);
+Route::get('getPermissions', [TaskController::class, 'getPermissions']);
+

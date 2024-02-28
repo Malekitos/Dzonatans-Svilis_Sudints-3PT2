@@ -5,9 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Group;
+use App\Models\permissions;
 
 class TaskController extends Controller
 {
+
+    public function getPermissions()
+    {
+        return response()->json(permissions::latest()->get());
+    }
+
+    public function createPermission(Request $request)
+    {
+        permissions::create([
+            'group' => $request->groupId,
+            'user' => $request->user,
+            'permission' => $request->permission,
+        ]);
+
+        return response()->json('Group created successfully!');
+    }
 
     public function createGroup(Request $request)
     {
@@ -18,8 +35,6 @@ class TaskController extends Controller
 
         return response()->json('Group created successfully!');
     }
-
-
 
     public function storeTask(Request $request)
     {
