@@ -26,6 +26,7 @@ Lai izveidotu šo lietotni lokāli, jums būs nepieciešams:
 3. Linux terminālā pārejiet uz `todo-web` mapi:
     ```bash
     cd todo-web
+    sudo chmod -R 777 storage
     ```
 
 4. Palaidiet Docker konteinerus ar šādu komandu:
