@@ -48,7 +48,7 @@
             </tr>
         </thead>
         <tbody  v-for="(permission,index) in permissions":key="index">
-            <tr v-if="permission.group==group.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <tr v-if="permission.group===group.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                    {{permission.user}}
                 </th>
@@ -56,7 +56,7 @@
                     {{permission.permission}}
                 </td>
                 <td class="px-6 py-4 text-right">
-                    <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+                    <a href="#" @click="removePermission();getPermissions()" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
                 </td>
             </tr>
 
@@ -70,7 +70,7 @@
 
    </div>
     <button type="button" @click="toggleModal();createPermission();getPermissions()" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Add</button>
-    <button type="button" @click="toggleModal()" class="float-end text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Close</button>
+    <button type="button" @click="toggleModal();" class="float-right text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Close</button>
 </div>
 </div>
 
@@ -85,6 +85,7 @@
 <script>
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import axios from 'axios';
 export default {
     props:{
         group: Object,
@@ -95,6 +96,7 @@ export default {
         return{
             showModal: false,
             permissionData:{
+                id: '',
                 user: '',
                 permission: '',
                 groupId: this.group.id
@@ -116,6 +118,25 @@ export default {
          });
   },
 
+  removePermission(){
+            this.loadingStatus = true,
+            axios.post(window.location.origin + '/api/removePermission/' + this.permissionData.id).then(response => {
+                        this.loadingStatus = false,
+                        notifyBad()
+                    }).catch(errors => {
+                    console.log(errors);
+                });
+                },
+
+
+    notifyBad(){
+        toast("Successful remove!", {
+        "theme": "dark",
+        "type": "error",
+        "dangerouslyHTMLString": true
+        })
+        return { notify }
+    },
 
 
   notifyGood(){

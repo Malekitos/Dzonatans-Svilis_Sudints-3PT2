@@ -21,4 +21,5 @@ Route::post('removeGroup/{id}', [TaskController::class, 'removeGroup']);
 
 Route::post('createPermission', [TaskController::class, 'createPermission']);
 Route::get('getPermissions', [TaskController::class, 'getPermissions']);
+Route::post('removePermission/{id}', [TaskController::class, 'removePermission']);
 

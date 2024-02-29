@@ -67,7 +67,7 @@
             </tr>
 
 
-            <tr v-for="(group,index) in groups":key="index" >
+            <!-- <tr v-for="(group,index) in groups":key="index" >
                 <td v-if="checkPermissions(group.id)">
                     <a href="#" @click="selectGroup(group.name)" class="inline-flex items-center justify-center p-5 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white">
                     <svg class="w-6 h-6 mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -82,7 +82,7 @@
                 <td v-if="checkPermissions(group.id)">
                     <remove-group :group="group" :getGroups="getGroups"></remove-group>
                 </td>
-            </tr>
+            </tr> -->
         </tbody>
     </table>
    <div>
@@ -488,16 +488,16 @@ if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localS
             }
         },
 
-        checkPermissions(groupId){
+        // checkPermissions(groupId){
 
-           this.pareizaGrupa = this.permissions.filter(item => item.group === groupId)
-            console.log(this.pareizaGrupa.length)
-           if(this.pareizaGrupa.length === 0){
-            return false
-           }else{
-            return true
-           }
-        },
+        //    this.pareizaGrupa = this.permissions.filter(item => item.group === groupId)
+        //     console.log(this.pareizaGrupa.length)
+        //    if(this.pareizaGrupa.length === 0){
+        //     return false
+        //    }else{
+        //     return true
+        //    }
+        // },
 
         notifyGood(){
         toast("Successful add!", {
