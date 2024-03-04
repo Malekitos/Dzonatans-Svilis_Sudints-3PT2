@@ -75,6 +75,7 @@
     </div>
 
     <div v-if="showModal" class="opacity-40 fixed inset-0 z-30 bg-black "></div>
+    <loader-component :loading-status="loadingStatus"></loader-component>
 
     </div>
 </template>

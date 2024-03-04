@@ -140,6 +140,7 @@
   <div>
 
     <loader-component :loading-status="loadingStatus"></loader-component>
+
   </div>
 </template>
 
@@ -248,21 +249,6 @@ if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localS
         return true
     }
     },
-
-
-
-    editTask(task){
-    this.editMode = true,
-    this.header = 'Edit task',
-    this.footerCreate = 'EDIT TASK',
-    this.taskData = {
-        id: task.id,
-        title: task.title,
-        date: task.date,
-        time: task.time,
-        detail: task.detail,
-    }
-  },
   clearData(){
     this.editMode = false,
     this.header = 'Add new task',
@@ -274,26 +260,6 @@ if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localS
     this.taskData.detail = '',
     this.taskData.id = 0
   },
-
-  storeTask(){
-        this.loadingStatus = true,
-          axios.post(window.apiUrl, {
-            var1: this.taskData,
-            var2: this.groupData
-          }).then(response => {
-            this.loadingStatus = true,
-           this.getTasks(),
-           this.notifyGood()
-             }).catch(errors => {
-            console.log(errors);
-         });
-         this.error = '',
-         this.taskData.title = '',
-         this.taskData.date = '',
-         this.taskData.time = '',
-         this.taskData.detail = '',
-         this.taskData.status = 0
-        },
     getTasks(){
         this.loadingStatus = true,
         axios.get(window.location.origin + '/api/getTasks/').then(response =>{
@@ -309,22 +275,7 @@ if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localS
     isEmpty(value) {
     return value.trim() === '';
   },
-  updateTask(){
-    this.loadingStatus = true,
-    axios.post(window.location.origin + '/api/updateTask/' + this.taskData.id, this.taskData).then(response => {
-                this.getTasks(),
-                this.notifyEdit(),
-                this.loadingStatus = false
-             }).catch(errors => {
-            console.log(errors);
-         });
-         this.error = '',
-         this.taskData.title = '',
-         this.taskData.date = '',
-         this.taskData.time = '',
-         this.taskData.detail = '',
-         this.editMode = 'false'
-  },
+
   completeTask(task){
     this.loadingStatus = true,
     this.taskData = {
@@ -342,9 +293,6 @@ if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localS
   },
 
   clearData(){
-    this.editMode = false,
-    this.header = 'Add new task',
-    this.footerCreate = 'CREATE TASK',
     this.error = '',
     this.taskData.title = '',
     this.taskData.date = '',
