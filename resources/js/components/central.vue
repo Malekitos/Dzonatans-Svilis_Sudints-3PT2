@@ -125,8 +125,8 @@
                         <td class="px-6 py-4 text-right" >
                             <remove-task :task="task" @click="getTasks()"/>
                         </td>
-                        <td class="px-6 py-4 text-right" >
-                            <a href="#" v-if="!task.status" @click="editTask(task);" v-on:click="toggleModal()"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        <td class="text-right" >
+                            <edit-task :task="task" @click="getTasks()"></edit-task>
                         </td>
                         <td class="px-6 py-4 text-right">
                             <a href="#" v-if="!task.status" @click="completeTask(task)" class="font-medium text-red-600 dark:text-green-500 hover:underline">Complete</a>
@@ -138,10 +138,6 @@
             </div>
         </div>
   <div>
-
-
-
-
 
     <loader-component :loading-status="loadingStatus"></loader-component>
   </div>

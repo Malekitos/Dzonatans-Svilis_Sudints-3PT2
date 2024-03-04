@@ -10,6 +10,8 @@ import removeGroup from './components/removeGroup.vue';
 import loaderComponent from './components/loaderComponent.vue';
 import permissionsGroup from './components/permissionsGroup.vue';
 import addTask from './components/addTask.vue';
+import editTask from './components/editTask.vue';
+
 
 
 
@@ -21,6 +23,8 @@ app.component('removeTask', removeTask);
 app.component('removeGroup', removeGroup);
 app.component('permissionsGroup', permissionsGroup);
 app.component('addTask', addTask);
+app.component('editTask', editTask);
+
 
 
  window.apiUrl = window.location.origin + '/api/storeTask/';
